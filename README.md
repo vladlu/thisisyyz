@@ -1,7 +1,9 @@
 # About
-Child theme for Salient with minimalistic BBPress template.
+
+A child theme for Salient with a neat BBPress template.
 
 *The default theme for my future BBPress theme changing plugin.*
+
 ![This is it](https://raw.githubusercontent.com/vladlu/thisisyyz/master/screenshot.png)
 
 #
