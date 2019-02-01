@@ -6,4 +6,4 @@ Child theme for Salient with minimalistic BBPress template.
 
 #
 
-Version: 1.0
+Version: 1.0.0
