@@ -7,3 +7,5 @@ Child theme for Salient with minimalistic BBPress template.
 #
 
 Version: 1.0.0
+
+License: [MIT](https://github.com/vladlu/thisisyyz/blob/master/LICENSE)
