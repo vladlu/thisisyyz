@@ -1,6 +1,6 @@
 /*
 Theme Name:  thisisyyz
-Description: Child theme for Salient with custom BBPress template.
+Description: A child theme for Salient with a neat BBPress template.
 Version:     1.0
 Theme URI:   https://github.com/vladlu/thisisyyz
 Author:      Vladislav Luzan
@@ -969,7 +969,7 @@ twitter-widget {
         }
 
         div.bbp-search-form button#bbp_search_submit {
-            flex-basis: 64px;                                     !important;
+            flex-basis: 64px                                     !important;
             flex-shrink: 0;
         }
 }

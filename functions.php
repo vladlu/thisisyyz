@@ -5,10 +5,17 @@
 				CONSTANTS
 --------------------------------------------------------------*/
 
+
 /*
  * Theme Version
  */
 define('THISISYYZ_VERSION', wp_get_theme()->get('Version') );
+
+
+/*
+ * Theme URL
+ */
+define('THISISYYZ_URL', get_stylesheet_directory_uri() . '/' );
 
 
 /*--------------------------------------------------------------
@@ -17,7 +24,7 @@ define('THISISYYZ_VERSION', wp_get_theme()->get('Version') );
 
 
 /**
- * Loads parent themes's style.css.
+ * Loads style.css of parent theme
  *
  * I see no reasons to follow Codex here and load child's style.css twice (It makes CSS debugging with browser harder).
  * https://developer.wordpress.org/themes/advanced-topics/child-themes/#3-enqueue-stylesheet
@@ -34,11 +41,31 @@ function thisisyyz_enqueue_styles() {
 add_action( 'wp_enqueue_scripts', 'thisisyyz_enqueue_scripts' );
 function thisisyyz_enqueue_scripts() {
 
-	/* Script.js */
-	wp_enqueue_script( 'thisisyyz-script', get_stylesheet_directory_uri() . '/js/script.js', [ 'jquery' ], THISISYYZ_VERSION );
+	/* babel-polyfill */
+	wp_enqueue_script(
+		'thisisyyz-script-babel-polyfill',
+		THISISYYZ_URL . 'libs/babel-polyfill/babel-polyfill.js',
+		[],
+		THISISYYZ_VERSION
+	);
+
+
+	/* Script */
+	wp_enqueue_script(
+		'thisisyyz-script',
+		THISISYYZ_URL . 'js/script.js',
+		[ 'jquery' ],
+		THISISYYZ_VERSION
+	);
+
 
 	/* Lightbox.js */
-	wp_enqueue_script( 'thisisyyz-lightbox', get_stylesheet_directory_uri() . '/js/lightbox.js', [ 'jquery', 'jquery-ui-draggable' ], THISISYYZ_VERSION );
+	wp_enqueue_script(
+		'thisisyyz-lightbox',
+		THISISYYZ_URL . 'js/lightbox.js',
+		[ 'jquery', 'jquery-ui-draggable' ],
+		THISISYYZ_VERSION
+	);
 }
 
 
@@ -47,7 +74,23 @@ function thisisyyz_enqueue_scripts() {
  */
 add_action( 'admin_enqueue_scripts', 'thisisyyz_admin_enqueue_scripts' );
 function thisisyyz_admin_enqueue_scripts() {
-	wp_enqueue_script( 'thisisyyz-admin-script', get_stylesheet_directory_uri() . '/js/admin-script.js', [ 'jquery' ], THISISYYZ_VERSION );
+
+	/* babel-polyfill */
+	wp_enqueue_script(
+		'thisisyyz-script-babel-polyfill',
+		THISISYYZ_URL . 'libs/babel-polyfill/babel-polyfill.js',
+		[],
+		THISISYYZ_VERSION
+	);
+
+
+	/* Admin Script */
+	wp_enqueue_script(
+		'thisisyyz-admin-script',
+		THISISYYZ_URL . 'js/admin-script.js',
+		[ 'jquery' ],
+		THISISYYZ_VERSION
+	);
 }
 
 
@@ -121,9 +164,9 @@ function thisisyyz_topic_last_reply_date() {
 
 
 /**
-* Gets reply_to URL
+ * Gets reply_to URL
  *
- * Triggers the function and then gets URL with the filter and prints it.
+ * Triggers the function and then gets the URL with the filter and prints it.
  */
 function thisisyyz_reply_to_url() {
 	add_filter( 'bbp_get_reply_to_link', 'thisisyyz_reply_to_url_handler', 10, 2 );

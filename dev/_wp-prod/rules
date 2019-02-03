@@ -1,0 +1,19 @@
+
+# to_prod
+
+
+webpack		admin-script.dev.js	admin-script.js		js/
+webpack		lightbox.dev.js		lightbox.js		js/
+webpack		script.dev.js		script.js		js/
+
+webpack		style.dev.css		style.css
+
+
+
+## Libraries
+
+
+### babel-polyfill
+
+
+copy	[m]/@babel/polyfill/dist/polyfill.min.js	libs/babel-polyfill/babel-polyfill.js
