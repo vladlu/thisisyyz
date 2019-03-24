@@ -9,13 +9,13 @@
 /*
  * Theme Version
  */
-define('THISISYYZ_VERSION', wp_get_theme()->get('Version') );
+define( 'THISISYYZ_VERSION', wp_get_theme()->get('Version') );
 
 
 /*
  * Theme URL
  */
-define('THISISYYZ_URL', get_stylesheet_directory_uri() . '/' );
+define( 'THISISYYZ_URL', get_stylesheet_directory_uri() . '/' );
 
 
 /*--------------------------------------------------------------
