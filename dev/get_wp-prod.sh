@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
+trap 'echo >&2 "ERROR on line $LINENO ($(tail -n+$LINENO $0 | head -n1))."' ERR
+trap 'echo "Done."' EXIT
 
 
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
@@ -8,7 +10,7 @@ version=$(cat "_wp-prod/version")
 cd "$SCRIPTPATH"
 
 
-wget "https://github.com/vladlu/wp-prod/archive/$version.tar.gz"
+wget -q "https://github.com/vladlu/wp-prod/archive/$version.tar.gz"
 tar -xzf "$version.tar.gz"
 rm -f "$version.tar.gz"
 mv "wp-prod-$version" "wp-prod"
