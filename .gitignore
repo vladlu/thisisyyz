@@ -23,5 +23,4 @@ Thumbs.db
 
 
 libs/
-dev/bin/
-dev/wp-prod/
+dev/wp-prod/wp-prod/
