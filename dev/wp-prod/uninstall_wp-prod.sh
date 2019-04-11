@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ##
-# Translates the project into prod state.
+# Removes wp-prod directory.
 ##
 
 set -Eeuo pipefail
@@ -16,11 +16,15 @@ cd "$SCRIPTPATH"
 
 
 if [ ! -d "$SCRIPTPATH/wp-prod" ]; then
-    wget -q "https://github.com/vladlu/wp-prod/archive/$version.tar.gz"
-    tar -xzf "$version.tar.gz"
-    rm -f "$version.tar.gz"
-    mv "wp-prod-$version" "wp-prod"
+    echo -e >&2 "\n$SCRIPTPATH/wp-prod not found. Nothing to uninstall. \nTerminated.\n"
+    exit 1
 fi
 
 
-wp-prod/bin/to_prod.sh
+if [ -f "$SCRIPTPATH/wp-prod/locks/prod" ]; then
+    echo -e >&2 "\nRun to_dev.sh first! \nTerminated.\n"
+    exit 1
+fi
+
+
+rm -rf "$SCRIPTPATH/wp-prod/"

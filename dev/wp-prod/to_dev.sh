@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+
+##
+# Translates the project into dev state.
+##
+
 set -Eeuo pipefail
 trap 'echo >&2 "ERROR on line $LINENO ($(tail -n+$LINENO $0 | head -n1)). Terminated."' ERR
 trap '[ $? = 0 ] && echo "Done." ' EXIT
