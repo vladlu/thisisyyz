@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 
-##
-# Translates the project into prod state.
-##
-
 set -Eeuo pipefail
 trap 'echo >&2 "ERROR on line $LINENO ($(tail -n+$LINENO $0 | head -n1)). Terminated."' ERR
 trap '[ $? = 0 ] && echo "Done." ' EXIT
-
 
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 version=$(cat "version")
 
 cd "$SCRIPTPATH"
+
+
+##
+# Runs wp-prod.
+##
 
 
 if [ ! -d "$SCRIPTPATH/wp-prod" ]; then
@@ -23,4 +23,4 @@ if [ ! -d "$SCRIPTPATH/wp-prod" ]; then
 fi
 
 
-wp-prod/bin/to_prod.sh
+wp-prod/bin/run.sh
