@@ -1,11 +1,11 @@
 theme
 
 
-webpack		admin-script.dev.js	admin-script.js		js/
-webpack		lightbox.dev.js		lightbox.js		js/
-webpack		script.dev.js		script.js		js/
+webpack		js/admin-script.js
+webpack		js/lightbox.js
+webpack		js/script.js
 
-webpack		style.dev.css		style.css
+webpack		style.css
 
 
 # Libraries
