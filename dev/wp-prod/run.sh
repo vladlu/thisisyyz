@@ -16,7 +16,8 @@ cd "$SCRIPTPATH"
 
 
 if [ ! -d "$SCRIPTPATH/wp-prod" ]; then
-    wget -q "https://github.com/vladlu/wp-prod/archive/$version.tar.gz"
+    echo -e "Getting wp-prod $version...\n"
+    wget "https://github.com/vladlu/wp-prod/archive/$version.tar.gz"
     tar -xzf "$version.tar.gz"
     rm -f "$version.tar.gz"
     mv "wp-prod-$version" "wp-prod"
