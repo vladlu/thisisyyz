@@ -31,7 +31,9 @@ define( 'THISISYYZ_URL', get_stylesheet_directory_uri() . '/' );
  */
 add_action( 'wp_enqueue_scripts', 'thisisyyz_enqueue_styles' );
 function thisisyyz_enqueue_styles() {
-	wp_enqueue_style( 'thisisyyz-parent-style', get_template_directory_uri() . '/style.css', [], THISISYYZ_VERSION );
+	$assets_suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
+	wp_enqueue_style( 'thisisyyz-parent-style', get_template_directory_uri() . '/style' . $assets_suffix . '.css', [], THISISYYZ_VERSION );
 }
 
 
@@ -40,8 +42,23 @@ function thisisyyz_enqueue_styles() {
  */
 add_action( 'wp_enqueue_scripts', 'thisisyyz_enqueue_scripts' );
 function thisisyyz_enqueue_scripts() {
+	$assets_suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-	/* babel-polyfill */
+
+	/*
+	 * JS
+	 */
+	wp_enqueue_script(
+		'thisisyyz-script',
+		THISISYYZ_URL . 'js/script' . $assets_suffix . '.js',
+		[ 'jquery' ],
+		THISISYYZ_VERSION
+	);
+
+
+	/*
+	 * Babel Polyfill
+	 */
 	wp_enqueue_script(
 		'thisisyyz-script-babel-polyfill',
 		THISISYYZ_URL . 'libs/babel-polyfill/babel-polyfill.js',
@@ -50,16 +67,9 @@ function thisisyyz_enqueue_scripts() {
 	);
 
 
-	/* Script */
-	wp_enqueue_script(
-		'thisisyyz-script',
-		THISISYYZ_URL . 'js/script.js',
-		[ 'jquery' ],
-		THISISYYZ_VERSION
-	);
-
-
-	/* Lightbox.js */
+	/*
+	 * Lightbox.js
+	 */
 	wp_enqueue_script(
 		'thisisyyz-lightbox',
 		THISISYYZ_URL . 'js/lightbox.js',
@@ -74,21 +84,27 @@ function thisisyyz_enqueue_scripts() {
  */
 add_action( 'admin_enqueue_scripts', 'thisisyyz_admin_enqueue_scripts' );
 function thisisyyz_admin_enqueue_scripts() {
+	$assets_suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-	/* babel-polyfill */
+
+	/*
+	 * JS
+	 */
 	wp_enqueue_script(
-		'thisisyyz-script-babel-polyfill',
-		THISISYYZ_URL . 'libs/babel-polyfill/babel-polyfill.js',
-		[],
+		'thisisyyz-admin-script',
+		THISISYYZ_URL . 'js/admin-script' . $assets_suffix . '.js',
+		[ 'jquery' ],
 		THISISYYZ_VERSION
 	);
 
 
-	/* Admin Script */
+	/*
+	 * Babel Polyfill
+	 */
 	wp_enqueue_script(
-		'thisisyyz-admin-script',
-		THISISYYZ_URL . 'js/admin-script.js',
-		[ 'jquery' ],
+		'thisisyyz-script-babel-polyfill',
+		THISISYYZ_URL . 'libs/babel-polyfill/babel-polyfill.js',
+		[],
 		THISISYYZ_VERSION
 	);
 }
