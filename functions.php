@@ -1,4 +1,16 @@
 <?php
+/**
+ * Functions file that contains all main routine
+ *
+ * @package thisisyyz
+ * @since 1.0.0
+ */
+
+
+// Exits if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 
 /*--------------------------------------------------------------
