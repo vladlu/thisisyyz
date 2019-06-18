@@ -149,6 +149,7 @@ add_filter( 'bbp_get_topic_revision_log', '__return_null' );
  * The function will print nothing instead of the empty span.
  *
  * @since 1.0.0
+ *
  * @param string $retval
  * @param array $r
  * @return mixed
