@@ -14,14 +14,20 @@
  * @since 1.0.0
  */
 function thisisyyz_load_constants() {
-	/*
-     * Theme Version
+	/**
+     * The version of the theme.
+	 *
+	 * @since 1.0.0
+	 * @var string THISISYYZ_VERSION
      */
 	define( 'THISISYYZ_VERSION', wp_get_theme()->get('Version') );
 
 
-	/*
-	 * Theme URL
+	/**
+	 * The URL to the theme.
+	 *
+	 * @since 1.0.0
+	 * @var string THISISYYZ_URL
 	 */
 	define( 'THISISYYZ_URL', get_stylesheet_directory_uri() . '/' );
 }
