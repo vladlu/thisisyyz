@@ -16,21 +16,21 @@
 function thisisyyz_load_constants() {
 
 	/**
-     * The version of the theme.
-	 *
-	 * @since 1.0.0
-	 * @var string THISISYYZ_VERSION
-     */
-	define( 'THISISYYZ_VERSION', wp_get_theme()->get('Version') );
-
-
-	/**
 	 * The URL to the theme.
 	 *
 	 * @since 1.0.0
 	 * @var string THISISYYZ_URL
 	 */
 	define( 'THISISYYZ_URL', get_stylesheet_directory_uri() . '/' );
+
+
+	/**
+	 * The version of the theme.
+	 *
+	 * @since 1.0.0
+	 * @var string THISISYYZ_VERSION
+	 */
+	define( 'THISISYYZ_VERSION', wp_get_theme()->get('Version') );
 }
 thisisyyz_load_constants();
 
