@@ -7,46 +7,50 @@
  */
 
 
-/*--------------------------------------------------------------
-				CONSTANTS
---------------------------------------------------------------*/
 
-
-/*
- * Theme Version
+/**
+ * Loads constants.
+ *
+ * @since 1.0.0
  */
-define( 'THISISYYZ_VERSION', wp_get_theme()->get('Version') );
+function thisisyyz_load_constants() {
+	/*
+     * Theme Version
+     */
+	define( 'THISISYYZ_VERSION', wp_get_theme()->get('Version') );
 
 
-/*
- * Theme URL
- */
-define( 'THISISYYZ_URL', get_stylesheet_directory_uri() . '/' );
+	/*
+	 * Theme URL
+	 */
+	define( 'THISISYYZ_URL', get_stylesheet_directory_uri() . '/' );
+}
+thisisyyz_load_constants();
 
 
-/*--------------------------------------------------------------
-				ACTIONS
---------------------------------------------------------------*/
 
 
 /**
- * Loads style.css of parent theme
+ * Loads style.css of the parent theme.
  *
  * I see no reasons to follow Codex here and load child's style.css twice (It makes CSS debugging with browser harder).
  * https://developer.wordpress.org/themes/advanced-topics/child-themes/#3-enqueue-stylesheet
+ *
+ * @since 1.0.0
  */
-add_action( 'wp_enqueue_scripts', 'thisisyyz_enqueue_styles' );
 function thisisyyz_enqueue_styles() {
 	$assets_suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 	wp_enqueue_style( 'thisisyyz-parent-style', get_template_directory_uri() . '/style' . $assets_suffix . '.css', [], THISISYYZ_VERSION );
 }
+add_action( 'wp_enqueue_scripts', 'thisisyyz_enqueue_styles' );
 
 
 /**
- * Loads scripts
+ * Loads public scripts.
+ *
+ * @since 1.0.0
  */
-add_action( 'wp_enqueue_scripts', 'thisisyyz_enqueue_scripts' );
 function thisisyyz_enqueue_scripts() {
 	$assets_suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
@@ -83,12 +87,14 @@ function thisisyyz_enqueue_scripts() {
 		THISISYYZ_VERSION
 	);
 }
+add_action( 'wp_enqueue_scripts', 'thisisyyz_enqueue_scripts' );
 
 
 /**
- * Loads admin scripts
+ * Loads admin scripts.
+ *
+ * @since 1.0.0
  */
-add_action( 'admin_enqueue_scripts', 'thisisyyz_admin_enqueue_scripts' );
 function thisisyyz_admin_enqueue_scripts() {
 	$assets_suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
@@ -114,21 +120,23 @@ function thisisyyz_admin_enqueue_scripts() {
 		THISISYYZ_VERSION
 	);
 }
+add_action( 'admin_enqueue_scripts', 'thisisyyz_admin_enqueue_scripts' );
 
 
-/*--------------------------------------------------------------
-				FILTERS
---------------------------------------------------------------*/
 
 
 /**
- * Show Lead Topic
+ * Show lead topic.
+ *
+ * @since 1.0.0
  */
 add_filter( 'bbp_show_lead_topic', '__return_true' );
 
 
 /**
- * Disables Replies and Topics Revision Log (This theme doesn't support them).
+ * Disables replies and topics revision log (Because this theme doesn't support them).
+ *
+ * @since 1.0.0
  */
 add_filter( 'bbp_allow_revisions',        '__return_false' );
 add_filter( 'bbp_get_reply_revision_log', '__return_null' );
@@ -137,26 +145,32 @@ add_filter( 'bbp_get_topic_revision_log', '__return_null' );
 
 /**
  * We don't need an empty span tag.
+ *
+ * The function will print nothing instead of the empty span.
+ *
+ * @since 1.0.0
+ * @param string $retval
+ * @param array $r
+ * @return mixed
  */
-add_filter( 'bbp_get_topic_admin_links', 'thisisyyz_all_or_nothing', 10, 2 );
-add_filter( 'bbp_get_reply_admin_links', 'thisisyyz_all_or_nothing', 10, 2 );
 function thisisyyz_all_or_nothing( $retval, $r ) {
 	foreach ( $r['links'] as $link) {
 		if ( $link ) {
-			return $retval; // The function will print nothing instead of the empty span.
+			return $retval;
 		}
 	}
 	return;
 }
+add_filter( 'bbp_get_topic_admin_links', 'thisisyyz_all_or_nothing', 10, 2 );
+add_filter( 'bbp_get_reply_admin_links', 'thisisyyz_all_or_nothing', 10, 2 );
 
 
-/*--------------------------------------------------------------
-				FUNCTIONS
---------------------------------------------------------------*/
 
 
 /**
- * Prints the number of replies in the topic
+ * Prints the number of replies for the topic.
+ *
+ * @since 1.0.0
  */
 function thisisyyz_topics_reply_count() {
 	$reply_count = bbp_get_topic_reply_count();
@@ -174,7 +188,9 @@ function thisisyyz_topics_reply_count() {
 
 
 /**
- * Prints the date of the last reply in the topic
+ * Prints the date of the last reply in the topic.
+ *
+ * @since 1.0.0
  */
 function thisisyyz_topic_last_reply_date() {
 	if ( bbp_get_topic_reply_count() ) {
@@ -186,15 +202,24 @@ function thisisyyz_topic_last_reply_date() {
 
 
 /**
- * Gets reply_to URL
+ * Gets "reply_to" URL.
  *
  * Triggers the function and then gets the URL with the filter and prints it.
+ *
+ * @since 1.0.0
  */
 function thisisyyz_reply_to_url() {
 	add_filter( 'bbp_get_reply_to_link', 'thisisyyz_reply_to_url_handler', 10, 2 );
 
 	bbp_get_reply_to_link( [ 'id' =>  bbp_get_reply_id() ] );
 }
+
+
+/**
+ * Prints "reply_to" URL.
+ *
+ * @since 1.0.0
+ */
 function thisisyyz_reply_to_url_handler( $retval, $r ) {
 	echo $r['uri'];
 
