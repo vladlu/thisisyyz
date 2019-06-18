@@ -14,6 +14,7 @@
  * @since 1.0.0
  */
 function thisisyyz_load_constants() {
+
 	/**
      * The version of the theme.
 	 *
