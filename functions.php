@@ -158,7 +158,7 @@ add_filter( 'bbp_get_topic_revision_log', '__return_null' );
  * @since 1.0.0
  *
  * @param string $retval
- * @param array $r
+ * @param array  $r
  * @return mixed
  */
 function thisisyyz_all_or_nothing( $retval, $r ) {
