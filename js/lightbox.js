@@ -1,68 +1,157 @@
+/**
+ * A Lightbox.
+ *
+ * @author Vladislav Luzan
+ * @since 1.0.0
+ */
 'use strict';
 
 
-jQuery(() => {
+jQuery( $ => {
 
 
-    let lightboxImageScaleSize = 1;
+    let lightboxImageScaleSize = 1,
+        $pageCover,
+        $lightboxImage;
 
 
-
-    jQuery( ".thisisyyz__message img" ).each(function() {
-        let $this = jQuery(this);
+    /**
+     * Enables lightboxes for all ".thisisyyz__message img" elements.
+     *
+     * @since 1.0.0
+     *
+     * @listens $this:click
+     *
+     * @return {void}
+     */
+    $( ".thisisyyz__message img" ).each( function() {
+        let $this = $(this);
 
         $this.on( 'click', { '$this': $this } , startLightBox );
-    });
+    } );
 
 
-
+    /**
+     * Starts a lightbox.
+     *
+     * Does the main routing initializing a lightbox.
+     *
+     * @since 1.0.0
+     *
+     * @param {Event} event The event object that contains the target lightbox element.
+     *
+     * @return {void}
+     */
     function startLightBox( event ) {
+        /*
+         * TODO: I think I can optimize this (1).
+         */
         let $this = event.data.$this;
 
-        jQuery( 'body' ).append( '<div class="thisisyyz__lighbox__page-cover"></div>' );
-        let $pageCover = jQuery( '.thisisyyz__lighbox__page-cover' );
 
-        jQuery( $this ).clone().addClass( 'thisisyyz__lighbox__image' ).appendTo( $pageCover );
-        let $lightboxImage = jQuery( '.thisisyyz__lighbox__image' );
+        /*
+         * Adds HTML of the lightbox to the page.
+         *
+         * TODO: AND THIS (2).
+         */
+        $( 'body' ).append( '<div class="thisisyyz__lighbox__page-cover"></div>' );
+        $pageCover = $( '.thisisyyz__lighbox__page-cover' );
 
+        $( $this ).clone().addClass( 'thisisyyz__lighbox__image' ).appendTo( $pageCover );
+        $lightboxImage = $( '.thisisyyz__lighbox__image' );
+
+
+        /*
+         * Adds a description for lightbox if the target image has an 'alt' attribute.
+         */
         let $alt = $this.attr( 'alt' );
-        if (typeof $alt !== typeof undefined && $alt !== false) {
-            jQuery( $pageCover ).append(
+        if ( typeof $alt !== typeof undefined && $alt !== false ) {
+            $( $pageCover ).append(
                 `<div class="thisisyyz__lightbox__description-container"><span class="thisisyyz__lightbox__description">${ $alt }</span></div>`
             );
         }
 
-        main( $lightboxImage );
+
+        /*
+         * Changes image size to fit well.
+         */
+        changeImageSize( $lightboxImage );
 
 
-        /* Closing */
-        $pageCover.on( 'click', { '$pageCover': $pageCover }, closeLightbox );
-    }
-
-
-    function main( $lightboxImage ) {
-
-        /* Change Image Size To Fit Well */
-
-        ChangeImageSize( $lightboxImage );
-        jQuery(window).on( 'resize', () => { ChangeImageSize( $lightboxImage ) } );
-
-
-        /* Draggable */
-
+        /*
+         * Makes a lightbox image draggable.
+         */
         $lightboxImage.draggable();
 
 
-        /* Scrolling */
-
-        $lightboxImage.on( 'wheel', { '$lightboxImage': $lightboxImage }, scrollHandler );
+        /*
+         * Adds listeners.
+         */
+        addListeners();
     }
 
 
-    function ChangeImageSize( $lightboxImage ) {
+    /**
+     * Adds listeners.
+     *
+     * @since 1.0.0
+     *
+     * @listens window:resize
+     * @listens $lightboxImage:wheel
+     * @listens $pageCover:click
+     *
+     * @return {void}
+     *
+     * TODO: Add "remove listeners" function.
+     */
+    function addListeners() {
 
-        let maxWidthForInitial  = jQuery(window).width()  * 0.90,
-            maxHeightForInitial = jQuery(window).height() * 0.80;
+        /**
+         * Changes image size to fit well.
+         *
+         * @since 1.0.0
+         *
+         * @listens window:resize
+         */
+        $( window ).on( 'resize', changeImageSize);
+
+
+        /**
+         * Scrolling (zoom).
+         *
+         * Handles zooming of the lightbox image.
+         *
+         * @since 1.0.0
+         *
+         * @listens $lightboxImage:wheel
+         */
+        $lightboxImage.on( 'wheel', scrollHandler );
+
+
+        /**
+         * Closing.
+         *
+         * Handles a closing of the light when clicking on the not lightbox image.
+         *
+         * @since 1.0.0
+         *
+         * @listens $pageCover:click
+         */
+        $pageCover.on( 'click', closeLightbox );
+    }
+
+
+    /**
+     * Changes image size to fit well.
+     *
+     * @since 1.0.0
+     *
+     * @return {void}
+     */
+    function changeImageSize() {
+
+        let maxWidthForInitial  = $(window).width()  * 0.90,
+            maxHeightForInitial = $(window).height() * 0.80;
 
 
         $lightboxImage.css( 'width', 'auto' );
@@ -80,30 +169,39 @@ jQuery(() => {
     }
 
 
-    function scrollHandler( e ) {
+    /**
+     * Handles scrolling (zooming) of the lightbox image.
+     *
+     * @since 1.0.0
+     *
+     * @param {event} event The event object.
+     *
+     * @return {void}
+     */
+    function scrollHandler( event ) {
 
-        let $lightboxImage = e.data.$lightboxImage;
+        /*
+         * Prevents window scrolling.
+         */
+
+        event = event || window.event;
+        if (event.preventDefault)
+            event.preventDefault();
+        event.returnValue = false;
 
 
-        /* Prevent Window Scrolling */
-
-        e = e || window.event;
-        if (e.preventDefault)
-            e.preventDefault();
-        e.returnValue = false;
-
-
-        /* Centering image to mouse position (1/2) */
-        /* GETS MOUSE POSITION RELATIVE TO THE IMAGE */
-
+        /*
+         * Centering the image to mouse position (1/2).
+         * Gets mouse position relative to the image.
+         */
         let initialWidth  = $lightboxImage.width(),
             initialHeight = $lightboxImage.height(),
 
             offsetLeft =  $lightboxImage.offset().left,
             offsetTop  =  $lightboxImage.offset().top,
-            // Mouse position
-            eventOccuredLeftToPage = e.pageX,
-            eventOccuredTopToPage  = e.pageY,
+            // Mouse position.
+            eventOccuredLeftToPage = event.pageX,
+            eventOccuredTopToPage  = event.pageY,
 
             eventOccuredLeftRelativePX = ( eventOccuredLeftToPage - offsetLeft ) / lightboxImageScaleSize,
             eventOccuredTopRelativePX  = ( eventOccuredTopToPage  - offsetTop  ) / lightboxImageScaleSize,
@@ -112,19 +210,19 @@ jQuery(() => {
             eventOccuredTopRelativePercent  = eventOccuredTopRelativePX  / initialHeight;
 
 
-        /* Zooming */
+        /*
+         * Zooming.
+         */
+        let scrollDelta =  event.originalEvent.deltaY * 0.01 * 0.15; // Image zooming coefficient (reverse sign).
 
-        // Image zooming coefficient (reverse sign)
-        let scrollDelta =  e.originalEvent.deltaY * 0.01 * 0.15;
-
-        if ( scrollDelta > 0 ){ // Mouse wheel Scroll Down (Decrease Image Size)
+        if ( scrollDelta > 0 ){ // Mouse wheel Scroll Down (Decrease image size).
             if ( lightboxImageScaleSize - scrollDelta > 0.5 ) {
                 lightboxImageScaleSize = lightboxImageScaleSize - scrollDelta;
             } else {
-                // Don't go further
+                // Don't go further.
                 return;
             }
-        } else if ( scrollDelta < 0 ) { //  Mouse wheel Scroll Up (Increase Image Size)
+        } else if ( scrollDelta < 0 ) { //  Mouse wheel Scroll Up (Increase image size).
             if ( lightboxImageScaleSize - scrollDelta < 6 ) {
                 lightboxImageScaleSize = lightboxImageScaleSize - scrollDelta;
             } else {
@@ -135,8 +233,10 @@ jQuery(() => {
         $lightboxImage.css( 'transform', `scale( ${ lightboxImageScaleSize } )` );
 
 
-        /* Centering image to mouse position (2/2) */
-        /* MOVES THE IMAGE TO BE AT THE SAME POSITION */
+        /*
+         * Centering the image to the mouse position (2/2).
+         * Moves the image to be at the same position.
+         */
 
         let widthChangeInPX  = initialWidth  * -scrollDelta,
             heightChangeInPX = initialHeight * -scrollDelta,
@@ -165,9 +265,14 @@ jQuery(() => {
     }
 
 
-    function closeLightbox(e) {
-        let $pageCover = e.data.$pageCover;
-
+    /**
+     * Closes the lightbox.
+     *
+     * @since 1.0.0
+     *
+     * @return {void}
+     */
+    function closeLightbox() {
         $pageCover.remove();
 
         lightboxImageScaleSize = 1;

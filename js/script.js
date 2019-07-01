@@ -1,26 +1,17 @@
+/**
+ * Contains common JS routines for the frontend.
+ *
+ * @author Vladislav Luzan
+ * @since 1.0.0
+ *
+ * TODO: Add lightbox closing with escape?
+ */
 'use strict';
 
 
-/*--------------------------------------------------------------
- -     VARIABLES
- -     FUNCTIONS
-
- 1     MAIN
- 2     ENABLE POINTER EVENTS
- 3     REMOVE REPLY COUNTER MARGINS
- 4     MAKE MESSAGES WITH YOUTUBE WIDTH 100
- 5     MOVE reply-counter to column-3 when there's no admin links
-
- #     LET'S START THE GAME!
---------------------------------------------------------------*/
-
-
-
-
-/*=====================================
-  -     VARIABLES
- =====================================*/
-
+/*
+ * Defines variables.
+ */
 
 const thisisyyz_someMagicalNumber = 36,   // Line height?
       thisisyyz_mainMediumMaxWidth = 709;
@@ -30,13 +21,19 @@ let thisisyyz_timeoutID1,
     thisisyyz_replyCounterColumn;
 
 
-/*=====================================
-  -     FUNCTIONS
- =====================================*/
-
-
-function thisisyyz_doTreatAsTextElem(that) {
-    let $that = jQuery(that);
+/**
+ * Determines whether the passed element should be treated as a text element.
+ *
+ * @since 1.0.0
+ *
+ * @global
+ *
+ * @param {HTMLElement} that Element.
+ *
+ * @return {boolean}
+ */
+function thisisyyz_doTreatAsTextElem( that ) {
+    let $that = jQuery( that );
 
     if ( that.nodeType === Node.TEXT_NODE ||
         $that.is( 'br' )        ||
@@ -51,19 +48,23 @@ function thisisyyz_doTreatAsTextElem(that) {
 }
 
 
-/*=================================================================================================================
-   1     MAIN
- =====================================*/
 
-
-
+/**
+ * Does the main routine.
+ *
+ * @since 1.0.0
+ *
+ * @global
+ *
+ * @param {boolean} earlyState Whether it's a early state of the loading.
+ */
 function thisisyyz_main( earlyState ) {
 
+    /*
+     * Setups bubble size.
+     */
 
-    /* SETUP BUBBLE SIZE */
-
-
-    jQuery( ".thisisyyz__message" ).each(function() {
+    jQuery( ".thisisyyz__message" ).each( function() {
 
         let $message = jQuery(this),
 
@@ -80,17 +81,15 @@ function thisisyyz_main( earlyState ) {
 
             $bubble = jQuery( '.thisisyyz__message__bubble', this );
 
-
-
-        /**
-         * Makes $texts which contains only a string display:inline
+        /*
+         * Makes $text which contains only a string with display:inline.
          */
 
         let isInline = true;
         $text.children().each(function() {
                 let $contents = jQuery(this).contents();
 
-                // Twitter-Widget with #shadow-root has length 0
+                // Twitter-Widget with #shadow-root has length 0.
                 if ( $contents.length ) {
                     $contents.each(function() {
                         if ( ! thisisyyz_doTreatAsTextElem(this) ) {
@@ -108,12 +107,10 @@ function thisisyyz_main( earlyState ) {
             $text.css( 'display', 'inline' );
         }
 
-
-        /**
+        /*
          * Removes padding-top if the first element of the first element is text;
          * and  padding-bottom if the first element of the last  element is text too.
          */
-
 
         if ( earlyState ) {
             messagePaddingTop = 0;
@@ -144,8 +141,9 @@ function thisisyyz_main( earlyState ) {
                 messagePaddingBottom =  parseInt( $message.css( 'padding-bottom' ) );
             }
 
-
-            /*  3 REMOVE REPLY COUNTER MARGINS */
+            /*
+             * Removes reply counter margins.
+             */
 
             thisisyyz_removeReplyCounterMargins( $bubble, $message );
         }
@@ -156,21 +154,21 @@ function thisisyyz_main( earlyState ) {
 
         function roundByBase( number, base ) {
             let c = Math.round( number / base );
-            // Never returns zero
+            // Never return zero.
             return c ? base * c : base;
         }
 
 
-        // Setups the size
+        // Setups the size.
         $bubble.width( $text.width() + messageHorizontalPadding )
                             .height( ( $text.css('display') === 'block' ) ?
                                 ( $text.height() + messageVerticalPadding ) :
                                 roundByBase( $text.height(), thisisyyz_someMagicalNumber ) );
-    });
+    } );
 
-
-    /* SELECT BUBBLE TYPE */
-
+    /*
+     * Selects bubble type.
+     */
 
     jQuery( ".thisisyyz__message__bubble" ).each(function() {
         let $elem = jQuery(this);
@@ -184,15 +182,15 @@ function thisisyyz_main( earlyState ) {
         }
     });
 
-
-    /* MOVE REPLY COUNTER (and show/hide third column) */
-
+    /*
+     * Moves reply counter (and show/hide third column).
+     */
 
     if ( jQuery(window).width() <= thisisyyz_mainMediumMaxWidth ) {
-        // Checks if reply-counter is already in column-1
+        // Checks if reply-counter is already in column-1.
         if ( ! jQuery( '.thisisyyz__column-1.thisisyyz__reply-counter' ).length ) {
 
-            // Moves reply-counter to column-1
+            // Moves reply-counter to column-1.
             jQuery( '.thisisyyz__container.type-topic' ).each( function() {
                 let $replyCounter = jQuery( this ).find( '.thisisyyz__reply-counter' ),
                     $column1      = jQuery( this ).find( '.thisisyyz__column-1' );
@@ -204,33 +202,30 @@ function thisisyyz_main( earlyState ) {
                 }
             });
         }
-    } else {
-        // Checks if reply-counter is already in column-2 (or 3)
-        if ( ! jQuery( `.thisisyyz__column-${thisisyyz_replyCounterColumn}.thisisyyz__reply-counter` ).length ) {
+    // Checks if the reply-counter is already in the column-2 (or 3).
+    } else if ( ! jQuery( `.thisisyyz__column-${thisisyyz_replyCounterColumn}.thisisyyz__reply-counter` ).length ) {
+        // Moves reply-counter back to column-2.
+        jQuery( '.thisisyyz__container.type-topic' ).each( function() {
+            let $replyCounter = jQuery( this ).find( '.thisisyyz__reply-counter' ),
+                $column2      = jQuery( this ).find( `.thisisyyz__column-${thisisyyz_replyCounterColumn}` );
 
-            // Moves reply-counter back (to column-2)
-            jQuery( '.thisisyyz__container.type-topic' ).each( function() {
-                let $replyCounter = jQuery( this ).find( '.thisisyyz__reply-counter' ),
-                    $column2      = jQuery( this ).find( `.thisisyyz__column-${thisisyyz_replyCounterColumn}` );
+            jQuery( $replyCounter ).appendTo( $column2 );
 
-                jQuery( $replyCounter ).appendTo( $column2 );
-
-                if ( thisisyyz_replyCounterColumn === 3 ) {
-                    jQuery( '.thisisyyz__column-3' ).show();
-                }
-            });
-        }
+            if ( thisisyyz_replyCounterColumn === 3 ) {
+                jQuery( '.thisisyyz__column-3' ).show();
+            }
+        });
     }
 
-
-    /* MOVE TIMESTAMP */
-
+    /*
+     * Moves a timestamp.
+     */
 
     if ( jQuery(window).width() <= thisisyyz_mainMediumMaxWidth ) {
-        // Checks if timestamp is already in message-container
+        // Checks if the timestamp is already in message-container.
         if ( ! jQuery( '.thisisyyz__message-container.thisisyyz__created' ).length ) {
 
-            // Moves timestamp to message-container
+            // Moves timestamp to message-container.
             jQuery( '.thisisyyz__container' ).each( function() {
                 let $timestamp        = jQuery( this ).find( '.thisisyyz__created' ),
                     $messageContainer = jQuery( this ).find( '.thisisyyz__message-container' );
@@ -238,48 +233,48 @@ function thisisyyz_main( earlyState ) {
                 jQuery( $timestamp ).appendTo( $messageContainer );
             });
         }
-    } else {
-        // Checks if timestamp is already in column-2
-        if ( ! jQuery( '.thisisyyz__column-2.thisisyyz__created' ).length ) {
-            // Moves timestamp back (to column-2)
-            jQuery( '.thisisyyz__container' ).each( function() {
-                let $timestamp = jQuery( this ).find( '.thisisyyz__created' ),
-                    $column2   = jQuery( this ).find( '.thisisyyz__column-2' );
+    // Checks if the timestamp is already in column-2.
+    } else if ( ! jQuery( '.thisisyyz__column-2.thisisyyz__created' ).length ) {
 
-                jQuery( $timestamp ).appendTo( $column2 );
-            });
-        }
+        // Moves timestamp back to column-2.
+        jQuery( '.thisisyyz__container' ).each( function() {
+            let $timestamp = jQuery( this ).find( '.thisisyyz__created' ),
+                $column2   = jQuery( this ).find( '.thisisyyz__column-2' );
+
+            jQuery( $timestamp ).appendTo( $column2 );
+        });
+
     }
 }
 
 
 
-/*=====================================
-  2     ENABLE POINTER EVENTS
- =====================================*/
-
-
-
 /**
- * Adds class "thisisyyz__message__text__item__all-pointer-events" to children of thisisyyz__message__text with
+ * Enables pointer events.
+ *
+ * Adds class "thisisyyz__message__text__item__all-pointer-events" to the children of thisisyyz__message__text with
  * more than 1 child inside or with no text node (so only text elems with no siblings will have no pointer events).
+ *
+ * @since 1.0.0
+ *
+ * @global
  */
 function thisisyyz_enablePointerEvents() {
     jQuery( ".thisisyyz__message" ).each(function() {
         let $text = jQuery( '.thisisyyz__message__text', this );
 
         $text.children().each(function() {
-            let $contents = jQuery(this).contents();
+            let $contents = jQuery( this ).contents();
 
-            // Twitter-Widget with #shadow-root has length 0
+            // Twitter-Widget with #shadow-root has length 0.
             if ( $contents.length ) {
-                $contents.each(function() {
-                    if ( ! ( thisisyyz_doTreatAsTextElem(this) ) ) {
-                        jQuery(this).addClass( 'thisisyyz__message__text__item__all-pointer-events' );
+                $contents.each( function() {
+                    if ( ! ( thisisyyz_doTreatAsTextElem( this ) ) ) {
+                        jQuery( this ).addClass( 'thisisyyz__message__text__item__all-pointer-events' );
                     }
-                });
+                } );
             } else {
-                jQuery(this).addClass( 'thisisyyz__message__text__item__all-pointer-events' );
+                jQuery( this ).addClass( 'thisisyyz__message__text__item__all-pointer-events' );
             }
         });
     });
@@ -287,14 +282,12 @@ function thisisyyz_enablePointerEvents() {
 
 
 
-/*=====================================
-  3     REMOVE REPLY COUNTER MARGINS
- =====================================*/
-
-
-
 /**
- * Removes reply counter margins for multiline message blocks
+ * Removes reply counter margins for multiline message blocks.
+ *
+ * @since 1.0.0
+ *
+ * @global
  */
 function thisisyyz_removeReplyCounterMargins( $bubble , $message ) {
     let $replyCounter = $message.siblings( '.thisisyyz__reply-counter' );
@@ -302,36 +295,37 @@ function thisisyyz_removeReplyCounterMargins( $bubble , $message ) {
     if ( $bubble.height() > thisisyyz_someMagicalNumber ) {
         $replyCounter.css( 'margin', 0 );
     } else {
-        // Disables given property
+        // Disables the given style.
         $replyCounter.css( 'margin', '' );
     }
 }
 
 
 
-/*=====================================
-  4     MAKE MESSAGES WITH YOUTUBE WIDTH 100
- =====================================*/
-
-
-
+/**
+ * Gives messages with YouTube width 100.
+ *
+ * @since 1.0.0
+ *
+ * @global
+ */
 function thisisyyz_messageWithYoutube100() {
     jQuery( 'iframe[src*="youtube.com"]' ).each(function() {
         jQuery(this).parents( '.thisisyyz__message-container' ).css( 'width', '100%' )
     });
-
-    // Triggers an event for YouTube iframe to resize!
+    // Triggers an event for YouTube iframe to resize.
     jQuery(window).trigger( 'resize' );
 }
 
 
 
-/*=====================================
-  5     MOVE reply-counter to column-3 when there's no admin links
- =====================================*/
-
-
-
+/**
+ * Moves reply-counter to column-3 when there's no admin links.
+ *
+ * @since 1.0.0
+ *
+ * @global
+ */
 function thisisyyz_replyCounterToColumn3() {
     if ( ! jQuery( '.thisisyyz__container.type-topic .thisisyyz__admin-links' ).length ) {
         thisisyyz_replyCounterColumn = 3;
@@ -352,39 +346,57 @@ function thisisyyz_replyCounterToColumn3() {
 
 
 
-/*=================================================================================================================
-  #     LET'S START THE GAME!
- =====================================*/
+/**
+ * Adds listeners that init everything.
+ *
+ * @since 1.0.0
+ *
+ * @global
+ *
+ * @listens document:ready
+ * @listens window:load
+ * @listens window:resize
+ */
+function thisisyyz_addListeners() {
+
+    /*
+     * Main.
+     *
+     * Does it multiple times because sometimes a single
+     * time is not enough. Especially when there are iframes.
+     *
+     * TODO: Eliminate the need to do it multiple times. Rewrite the theme.
+     */
+
+    jQuery( document ).on( 'ready', () => {
+        //  Moves reply-counter to column-3 when there's no admin links.
+        thisisyyz_replyCounterToColumn3();
+
+        thisisyyz_main( true )
+    } );
+
+    jQuery( window ).on( 'load',  () => {
+        setTimeout( thisisyyz_main, 400, false );
+        setTimeout( thisisyyz_main, 800, false );
+    });
+
+    jQuery( window ).on( 'resize', () => {
+        clearTimeout( thisisyyz_timeoutID1 );
+        thisisyyz_timeoutID1 = setTimeout( () => { thisisyyz_main(); setTimeout( thisisyyz_main, 400, false ) }, 200, false );
+    });
 
 
+    /*
+     * Enables pointer events.
+     */
 
-/*  1 MAIN  */
-
-jQuery(document).on( 'ready', () => {
-    /*  5 MOVE reply-counter to column-3 when there's no admin links */
-    thisisyyz_replyCounterToColumn3();
-
-    thisisyyz_main( true )
-} );
-
-jQuery(window)  .on( 'load',  () => {
-    setTimeout( thisisyyz_main, 400, false );
-    setTimeout( thisisyyz_main, 800, false );
-});
-
-jQuery(window).on( 'resize', () => {
-    clearTimeout( thisisyyz_timeoutID1 );
-    thisisyyz_timeoutID1 = setTimeout( () => { thisisyyz_main(); setTimeout(thisisyyz_main, 400, false) }, 200, false );
-});
+    jQuery( window ).on( 'load', thisisyyz_enablePointerEvents );
 
 
+    /*
+     * Gives messages with YouTube width 100.
+     */
 
-/*  2 ENABLE POINTER EVENTS */
-
-jQuery(window).on( 'load', thisisyyz_enablePointerEvents );
-
-
-
-/*  4 MAKE MESSAGES WITH YOUTUBE WIDTH 100 */
-
-jQuery(document).on( 'ready', thisisyyz_messageWithYoutube100 );
+    jQuery( document ).on( 'ready', thisisyyz_messageWithYoutube100 );
+}
+thisisyyz_addListeners();
