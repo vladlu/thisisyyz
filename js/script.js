@@ -4,7 +4,7 @@
  * @author Vladislav Luzan
  * @since 1.0.0
  *
- * TODO: Add lightbox closing with escape?
+ * TODO: Add lightbox @@closing with escape?
  */
 'use strict';
 
