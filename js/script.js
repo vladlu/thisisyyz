@@ -172,7 +172,7 @@ function thisisyyz_main( earlyState ) {
 
     jQuery( ".thisisyyz__message__bubble" ).each(function() {
         let $elem = jQuery(this);
-                        // Line height (1 line of text)
+                        // Line height (1 line of the text).
         if ( $elem.height() > thisisyyz_someMagicalNumber ) {
             $elem.addClass('second-bubble-type');
             $elem.removeClass('first-bubble-type');

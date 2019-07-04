@@ -188,7 +188,7 @@ function thisisyyz_topics_reply_count() {
 			'<span class="thisisyyz__reply-count-number">%s</span> <span class="thisisyyz__reply-count-text">REPLY</span>',
 			'<span class="thisisyyz__reply-count-number">%s</span> <span class="thisisyyz__reply-count-text">REPLIES</span>',
 			$reply_count ), $reply_count );
-	// No replies yet
+	// No replies yet.
 	} else {
 		echo '<span class="thisisyyz__reply-count-nothing"> — </span>';
 	}
