@@ -32,7 +32,7 @@ uninstall_wp-prod() {
 
 
 ##
-# Runs wp-prod
+# Runs wp-prod.
 ##
 
 if [ ! -d "$SCRIPTPATH/wp-prod" ]; then
@@ -41,7 +41,7 @@ fi
 
 
 ##
-# Checks for the version
+# Checks for the version.
 ##
 
 current_version=$(cat "wp-prod/version")
@@ -50,7 +50,7 @@ if [[ "$current_version" != "$specified_version" ]]; then
     echo -e "The currently installed version ($current_version) differs from the specified ($specified_version).
 Deleting it and installing the specified version.. \n"
 
-    # If they differ, deletes the current version and installs the specified
+    # If they differ, deletes the current version and installs the specified.
 
     uninstall_wp-prod
     install_wp-prod
