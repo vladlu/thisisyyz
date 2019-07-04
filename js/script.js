@@ -35,7 +35,7 @@ let thisisyyz_timeoutID1,
 function thisisyyz_doTreatAsTextElem( that ) {
     let $that = jQuery( that );
 
-    if ( that.nodeType === Node.TEXT_NODE ||
+    if ( Node.TEXT_NODE === that.nodeType ||
         $that.is( 'br' )        ||
         $that.is( 'strong' )    ||
         $that.is( 'em' )        ||
@@ -197,7 +197,7 @@ function thisisyyz_main( earlyState ) {
 
                 jQuery( $replyCounter ).appendTo( $column1 );
 
-                if ( thisisyyz_replyCounterColumn === 3 ) {
+                if ( 3 === thisisyyz_replyCounterColumn ) {
                     jQuery( '.thisisyyz__column-3' ).hide();
                 }
             });
@@ -211,7 +211,7 @@ function thisisyyz_main( earlyState ) {
 
             jQuery( $replyCounter ).appendTo( $column2 );
 
-            if ( thisisyyz_replyCounterColumn === 3 ) {
+            if ( 3 === thisisyyz_replyCounterColumn ) {
                 jQuery( '.thisisyyz__column-3' ).show();
             }
         });

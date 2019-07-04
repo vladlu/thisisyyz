@@ -65,7 +65,7 @@ jQuery( $ => {
          * Adds a description for lightbox if the target image has an 'alt' attribute.
          */
         let $alt = $this.attr( 'alt' );
-        if ( typeof $alt !== typeof undefined && $alt !== false ) {
+        if ( typeof undefined !== typeof $alt && false !== $alt ) {
             $( $pageCover ).append(
                 `<div class="thisisyyz__lightbox__description-container"><span class="thisisyyz__lightbox__description">${ $alt }</span></div>`
             );

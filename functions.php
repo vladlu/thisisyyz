@@ -183,7 +183,7 @@ add_filter( 'bbp_get_reply_admin_links', 'thisisyyz_all_or_nothing', 10, 2 );
 function thisisyyz_topics_reply_count() {
 	$reply_count = bbp_get_topic_reply_count();
 
-	if ($reply_count) {
+	if ( $reply_count ) {
 		printf( _n(
 			'<span class="thisisyyz__reply-count-number">%s</span> <span class="thisisyyz__reply-count-text">REPLY</span>',
 			'<span class="thisisyyz__reply-count-number">%s</span> <span class="thisisyyz__reply-count-text">REPLIES</span>',
