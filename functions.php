@@ -74,17 +74,6 @@ function thisisyyz_enqueue_scripts() {
 
 
 	/*
-	 * Babel Polyfill
-	 */
-	wp_enqueue_script(
-		'thisisyyz-script-babel-polyfill',
-		THISISYYZ_URL . 'libs/babel-polyfill/babel-polyfill.js',
-		[],
-		THISISYYZ_VERSION
-	);
-
-
-	/*
 	 * Lightbox.js
 	 */
 	wp_enqueue_script(
@@ -113,17 +102,6 @@ function thisisyyz_admin_enqueue_scripts() {
 		'thisisyyz-admin-script',
 		THISISYYZ_URL . 'js/admin-script' . $assets_suffix . '.js',
 		[ 'jquery' ],
-		THISISYYZ_VERSION
-	);
-
-
-	/*
-	 * Babel Polyfill
-	 */
-	wp_enqueue_script(
-		'thisisyyz-script-babel-polyfill',
-		THISISYYZ_URL . 'libs/babel-polyfill/babel-polyfill.js',
-		[],
 		THISISYYZ_VERSION
 	);
 }
