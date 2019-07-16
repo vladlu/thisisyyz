@@ -18,9 +18,14 @@ project.properties
 Thumbs.db
 
 
-
 # MAIN
 
-
 libs/
-dev/wp-prod/wp-prod-core/
+
+
+# wp-prod
+
+dev/wp-prod/*
+!dev/wp-prod/*.sh
+!dev/wp-prod/rules
+!dev/wp-prod/core-version
