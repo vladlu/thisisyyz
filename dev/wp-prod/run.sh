@@ -5,18 +5,18 @@ trap 'echo >&2 "ERROR on line $LINENO ($(tail -n+$LINENO $0 | head -n1)). Termin
 trap '[ $? = 0 ] && echo "Done." ' EXIT
 
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
-version=$(cat "version")
+core_version=$(cat "core-version")
 
 cd "$SCRIPTPATH"
 
 
 
 install_wp-prod-core() {
-    echo -e "Getting wp-prod-core $version...\n"
-    wget "https://github.com/vladlu/wp-prod-core/archive/$version.tar.gz"
-    tar -xzf "$version.tar.gz"
-    rm -f "$version.tar.gz"
-    mv "wp-prod-core-$version" "wp-prod-core"
+    echo -e "Getting wp-prod-core $core_version...\n"
+    wget "https://github.com/vladlu/wp-prod-core/archive/$core_version.tar.gz"
+    tar -xzf "$core_version.tar.gz"
+    rm -f "$core_version.tar.gz"
+    mv "wp-prod-core-$core_version" "wp-prod-core"
 }
 
 
@@ -41,16 +41,16 @@ fi
 
 
 ##
-# Checks for the version.
+# Checks for the core version.
 ##
 
-current_version=$(cat "wp-prod-core/version")
-specified_version=$(cat version)
-if [[ "$current_version" != "$specified_version" ]]; then
-    echo -e "The currently installed version ($current_version) differs from the specified ($specified_version).
-Deleting it and installing the specified version.. \n"
+current_core_version=$(cat "wp-prod-core/version")
+specified_core_version="$core_version"
+if [[ "$current_core_version" != "$specified_core_version" ]]; then
+    echo -e "The currently installed core version ($current_core_version) differs from the specified one ($specified_core_version).
+Deleting it and installing the specified core version.. \n"
 
-    # If they differ, deletes the current version and installs the specified.
+    # If they differ, deletes the current core version and installs the specified one.
 
     uninstall_wp-prod-core
     install_wp-prod-core
