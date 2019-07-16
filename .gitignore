@@ -29,3 +29,4 @@ dev/wp-prod/*
 !dev/wp-prod/*.sh
 !dev/wp-prod/rules
 !dev/wp-prod/core-version
+!dev/wp-prod/readme.txt
