@@ -9,4 +9,4 @@ SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 cd "$SCRIPTPATH"
 
 
-sass --no-source-map --watch $(cat "rules" | awk -F':' '{if (length($2) == 0) {print "../../" $1} else  {print "../../" $1 ":../../" $2}}')
+sass --watch --no-source-map $(cat "rules" | awk '{ if ( length($1) > 0 && substr($1,1,1) !~ /^#/ ) { if ( length($2) > 0 ) { print "../.." $1 ":../../" $2 } else { print "../../" $1 } } }')

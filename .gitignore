@@ -30,3 +30,11 @@ dev/wp-prod/*
 !dev/wp-prod/rules
 !dev/wp-prod/core-version
 !dev/wp-prod/readme.txt
+
+
+# sass-watch
+
+dev/sass-watch/*
+!dev/sass-watch/*.sh
+!dev/sass-watch/rules
+!dev/wp-prod/readme.txt
