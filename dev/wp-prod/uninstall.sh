@@ -11,13 +11,13 @@ cd "$SCRIPTPATH"
 
 
 ##
-# Removes wp-prod directory (usually used to free up disk space or install another version of wp-prod).
+# Removes wp-prod-core directory (usually used to free up disk space or install another version of wp-prod-core).
 ##
 
 
-if [ -d "$SCRIPTPATH/wp-prod" ]; then
-    rm -rf "$SCRIPTPATH/wp-prod/"
+if [ -d "$SCRIPTPATH/wp-prod-core" ]; then
+    rm -rf "$SCRIPTPATH/wp-prod-core/"
 else
-    echo -e >&2 "\n$SCRIPTPATH/wp-prod not found. Nothing to uninstall. \nTerminated.\n"
+    echo -e >&2 "\n$SCRIPTPATH/wp-prod-core not found. Nothing to uninstall. \nTerminated.\n"
     exit 1
 fi

@@ -11,21 +11,21 @@ cd "$SCRIPTPATH"
 
 
 
-install_wp-prod() {
-    echo -e "Getting wp-prod $version...\n"
-    wget "https://github.com/vladlu/wp-prod/archive/$version.tar.gz"
+install_wp-prod-core() {
+    echo -e "Getting wp-prod-core $version...\n"
+    wget "https://github.com/vladlu/wp-prod-core/archive/$version.tar.gz"
     tar -xzf "$version.tar.gz"
     rm -f "$version.tar.gz"
-    mv "wp-prod-$version" "wp-prod"
+    mv "wp-prod-core-$version" "wp-prod-core"
 }
 
 
-run_wp-prod() {
-    wp-prod/bin/run.sh
+run_wp-prod-core() {
+    wp-prod-core/bin/run.sh
 }
 
 
-uninstall_wp-prod() {
+uninstall_wp-prod-core() {
     "$SCRIPTPATH/uninstall.sh"
 }
 
@@ -35,8 +35,8 @@ uninstall_wp-prod() {
 # Runs wp-prod.
 ##
 
-if [ ! -d "$SCRIPTPATH/wp-prod" ]; then
-    install_wp-prod
+if [ ! -d "$SCRIPTPATH/wp-prod-core" ]; then
+    install_wp-prod-core
 fi
 
 
@@ -44,7 +44,7 @@ fi
 # Checks for the version.
 ##
 
-current_version=$(cat "wp-prod/version")
+current_version=$(cat "wp-prod-core/version")
 specified_version=$(cat version)
 if [[ "$current_version" != "$specified_version" ]]; then
     echo -e "The currently installed version ($current_version) differs from the specified ($specified_version).
@@ -52,9 +52,9 @@ Deleting it and installing the specified version.. \n"
 
     # If they differ, deletes the current version and installs the specified.
 
-    uninstall_wp-prod
-    install_wp-prod
+    uninstall_wp-prod-core
+    install_wp-prod-core
 fi
 
 
-run_wp-prod
+run_wp-prod-core
