@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+##
+# Installs the specified version of wp-prod-core if needed and runs it.
+##
+
 set -Eeuo pipefail
 trap 'echo >&2 "ERROR on line $LINENO ($(tail -n+$LINENO $0 | head -n1)). Terminated."' ERR
 trap '[ $? = 0 ] && echo "Done." ' EXIT

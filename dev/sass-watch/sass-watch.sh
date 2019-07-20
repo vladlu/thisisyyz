@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+##
+# Activates sass-watch.
+#
+# Parses the rules and activates sass-watch based on the rules.
+##
+
 set -Eeuo pipefail
 trap 'echo >&2 "ERROR on line $LINENO ($(tail -n+$LINENO $0 | head -n1)). Terminated."' ERR
 trap '[ $? = 0 ] && echo "Done." ' EXIT
