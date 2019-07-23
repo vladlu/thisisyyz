@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Archive Forum Content Part
  *
@@ -27,7 +26,7 @@
 
 	<?php if ( bbp_has_forums() ) : ?>
 
-		<?php bbp_get_template_part( 'loop',     'forums'    ); ?>
+		<?php bbp_get_template_part( 'loop', 'forums' ); ?>
 
 	<?php else : ?>
 

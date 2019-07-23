@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Search Loop - Single Forum
  *
@@ -10,7 +9,7 @@
 ?>
 
 <div class="thisisyyz__search__container">
-    <div class="thisisyyz__forum-body">
-        <?php bbp_get_template_part( 'loop', 'single-forum' ); ?>
-    </div>
+	<div class="thisisyyz__forum-body">
+		<?php bbp_get_template_part( 'loop', 'single-forum' ); ?>
+	</div>
 </div>

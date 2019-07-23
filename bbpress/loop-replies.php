@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Replies Loop
  *
@@ -12,7 +11,7 @@
 <?php do_action( 'bbp_template_before_replies_loop' ); ?>
 
 
-<?php if ( !bbp_show_lead_topic() ) : ?>
+<?php if ( ! bbp_show_lead_topic() ) : ?>
 
 	<?php bbp_topic_subscription_link(); ?>
 
@@ -31,7 +30,10 @@
 
 		<?php else : ?>
 
-			<?php while ( bbp_replies() ) : bbp_the_reply(); ?>
+			<?php
+			while ( bbp_replies() ) :
+				bbp_the_reply();
+				?>
 
 				<?php bbp_get_template_part( 'loop', 'single-reply' ); ?>
 

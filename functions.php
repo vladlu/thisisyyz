@@ -6,8 +6,6 @@
  * @since 1.0.0
  */
 
-
-
 /**
  * Loads constants.
  *
@@ -23,14 +21,13 @@ function thisisyyz_load_constants() {
 	 */
 	define( 'THISISYYZ_URL', get_stylesheet_directory_uri() . '/' );
 
-
 	/**
 	 * The version of the theme.
 	 *
 	 * @since 1.0.0
 	 * @var string THISISYYZ_VERSION
 	 */
-	define( 'THISISYYZ_VERSION', wp_get_theme()->get('Version') );
+	define( 'THISISYYZ_VERSION', wp_get_theme()->get( 'Version' ) );
 }
 thisisyyz_load_constants();
 
@@ -61,7 +58,6 @@ add_action( 'wp_enqueue_scripts', 'thisisyyz_enqueue_styles' );
 function thisisyyz_enqueue_scripts() {
 	$assets_suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-
 	/*
 	 * JS
 	 */
@@ -69,9 +65,9 @@ function thisisyyz_enqueue_scripts() {
 		'thisisyyz-script',
 		THISISYYZ_URL . 'js/script' . $assets_suffix . '.js',
 		[ 'jquery' ],
-		THISISYYZ_VERSION
+		THISISYYZ_VERSION,
+		false
 	);
-
 
 	/*
 	 * Lightbox.js
@@ -80,7 +76,8 @@ function thisisyyz_enqueue_scripts() {
 		'thisisyyz-lightbox',
 		THISISYYZ_URL . 'js/lightbox.js',
 		[ 'jquery', 'jquery-ui-draggable' ],
-		THISISYYZ_VERSION
+		THISISYYZ_VERSION,
+		false
 	);
 }
 add_action( 'wp_enqueue_scripts', 'thisisyyz_enqueue_scripts' );
@@ -94,7 +91,6 @@ add_action( 'wp_enqueue_scripts', 'thisisyyz_enqueue_scripts' );
 function thisisyyz_admin_enqueue_scripts() {
 	$assets_suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-
 	/*
 	 * JS
 	 */
@@ -102,7 +98,8 @@ function thisisyyz_admin_enqueue_scripts() {
 		'thisisyyz-admin-script',
 		THISISYYZ_URL . 'js/admin-script' . $assets_suffix . '.js',
 		[ 'jquery' ],
-		THISISYYZ_VERSION
+		THISISYYZ_VERSION,
+		false
 	);
 }
 add_action( 'admin_enqueue_scripts', 'thisisyyz_admin_enqueue_scripts' );
@@ -131,7 +128,7 @@ add_filter( 'bbp_get_topic_revision_log', '__return_null' );
 /**
  * We don't need an empty span tag.
  *
- * The function will print nothing instead of the empty span.
+ * The function will print nothing instead of the empty span tag.
  *
  * @since 1.0.0
  *
@@ -140,12 +137,12 @@ add_filter( 'bbp_get_topic_revision_log', '__return_null' );
  * @return mixed
  */
 function thisisyyz_all_or_nothing( $retval, $r ) {
-	foreach ( $r['links'] as $link) {
+	foreach ( $r['links'] as $link ) {
 		if ( $link ) {
 			return $retval;
 		}
 	}
-	return;
+	return '';
 }
 add_filter( 'bbp_get_topic_admin_links', 'thisisyyz_all_or_nothing', 10, 2 );
 add_filter( 'bbp_get_reply_admin_links', 'thisisyyz_all_or_nothing', 10, 2 );
@@ -162,10 +159,14 @@ function thisisyyz_topics_reply_count() {
 	$reply_count = bbp_get_topic_reply_count();
 
 	if ( $reply_count ) {
-		printf( _n(
-			'<span class="thisisyyz__reply-count-number">%s</span> <span class="thisisyyz__reply-count-text">REPLY</span>',
-			'<span class="thisisyyz__reply-count-number">%s</span> <span class="thisisyyz__reply-count-text">REPLIES</span>',
-			$reply_count ), $reply_count );
+		printf(
+			_n(
+				'<span class="thisisyyz__reply-count-number">%s</span> <span class="thisisyyz__reply-count-text">REPLY</span>',
+				'<span class="thisisyyz__reply-count-number">%s</span> <span class="thisisyyz__reply-count-text">REPLIES</span>',
+				$reply_count
+			),
+			esc_html( $reply_count )
+		);
 	// No replies yet.
 	} else {
 		echo '<span class="thisisyyz__reply-count-nothing"> — </span>';
@@ -180,9 +181,9 @@ function thisisyyz_topics_reply_count() {
  */
 function thisisyyz_topic_last_reply_date() {
 	if ( bbp_get_topic_reply_count() ) {
-		echo 'Last reply was ' . bbp_get_topic_last_active_time();
+		echo esc_attr( 'Last reply was ' . bbp_get_topic_last_active_time() );
 	} else {
-		echo 'No replies yet';
+		echo esc_attr( 'No replies yet' );
 	}
 }
 
@@ -190,14 +191,14 @@ function thisisyyz_topic_last_reply_date() {
 /**
  * Gets "reply_to" URL.
  *
- * Triggers the function and then gets the URL with the filter and prints it.
+ * Triggers a function and then gets the URL with the filter and prints it.
  *
  * @since 1.0.0
  */
 function thisisyyz_reply_to_url() {
 	add_filter( 'bbp_get_reply_to_link', 'thisisyyz_reply_to_url_handler', 10, 2 );
 
-	bbp_get_reply_to_link( [ 'id' =>  bbp_get_reply_id() ] );
+	bbp_get_reply_to_link( [ 'id' => bbp_get_reply_id() ] );
 }
 
 
@@ -205,9 +206,12 @@ function thisisyyz_reply_to_url() {
  * Prints "reply_to" URL.
  *
  * @since 1.0.0
+ *
+ * @param string $retval
+ * @param array  $r
  */
 function thisisyyz_reply_to_url_handler( $retval, $r ) {
-	echo $r['uri'];
+	echo esc_url( $r['uri'] );
 
 	remove_action( 'bbp_get_reply_to_link', 'thisisyyz_reply_to_url_handler' );
 }

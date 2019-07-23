@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Forums Loop - Single Forum
  *
@@ -19,7 +18,15 @@
 
 				<?php do_action( 'bbp_theme_before_forum_subscription_action' ); ?>
 
-				<?php bbp_forum_subscription_link( array( 'before' => '', 'subscribe' => '+', 'unsubscribe' => '&times;' ) ); ?>
+				<?php
+				bbp_forum_subscription_link(
+					[
+						'before'      => '',
+						'subscribe'   => '+',
+						'unsubscribe' => '&times;',
+					]
+				);
+				?>
 
 				<?php do_action( 'bbp_theme_after_forum_subscription_action' ); ?>
 
@@ -50,13 +57,13 @@
 	</div>
 
 	<div class="bbp-forum-topic-count">
-        <i class="fa fa-comment-o" aria-hidden="true"></i>
-        <?php bbp_forum_topic_count(); ?>
-    </div>
+		<i class="fa fa-comment-o" aria-hidden="true"></i>
+		<?php bbp_forum_topic_count(); ?>
+	</div>
 
 	<div class="bbp-forum-reply-count">
-        <i class="fa fa-comments-o" aria-hidden="true"></i>
+		<i class="fa fa-comments-o" aria-hidden="true"></i>
 		<?php bbp_show_lead_topic() ? bbp_forum_reply_count() : bbp_forum_post_count(); ?>
-    </div>
+	</div>
 
 </div><!-- #bbp-forum-<?php bbp_forum_id(); ?> -->
