@@ -14,7 +14,6 @@ core_version=$(cat "core-version")
 cd "$SCRIPTPATH"
 
 
-
 install_wp-prod-core() {
     echo -e "Getting wp-prod-core $core_version...\n"
     wget "https://github.com/vladlu/wp-prod-core/archive/$core_version.tar.gz"
@@ -23,16 +22,13 @@ install_wp-prod-core() {
     mv "wp-prod-core-$core_version" "wp-prod-core"
 }
 
-
 run_wp-prod-core() {
     wp-prod-core/bin/run.sh
 }
 
-
 uninstall_wp-prod-core() {
     "$SCRIPTPATH/uninstall.sh"
 }
-
 
 
 ##
@@ -42,7 +38,6 @@ uninstall_wp-prod-core() {
 if [ ! -d "$SCRIPTPATH/wp-prod-core" ]; then
     install_wp-prod-core
 fi
-
 
 ##
 # Checks for the core version.
@@ -59,6 +54,5 @@ Deleting it and installing the specified core version.. \n"
     uninstall_wp-prod-core
     install_wp-prod-core
 fi
-
 
 run_wp-prod-core

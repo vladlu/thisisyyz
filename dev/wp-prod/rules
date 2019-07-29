@@ -4,5 +4,3 @@ theme
 webpack		js/admin-script.js
 webpack		js/lightbox.js
 webpack		js/script.js
-
-webpack		style.css
