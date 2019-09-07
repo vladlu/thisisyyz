@@ -9,9 +9,9 @@ trap 'echo >&2 "ERROR on line $LINENO ($(tail -n+$LINENO $0 | head -n1)). Termin
 trap '[ $? = 0 ] && echo "Done." ' EXIT
 
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
-core_version=$(cat "core-version")
-
 cd "$SCRIPTPATH"
+
+core_version=$(cat "core-version")
 
 
 install_wp-prod-core() {
